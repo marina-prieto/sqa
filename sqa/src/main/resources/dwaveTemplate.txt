@@ -1,0 +1,25 @@
+from dwave.system import EmbeddingComposite, DWaveSampler, LeapHybridSampler
+from dimod.reference.samplers import ExactSolver
+from dimod import BinaryQuadraticModel, SimulatedAnnealingSampler
+from collections import defaultdict
+from math import *
+
+
+#SOLVER
+solver = ExactSolver()
+
+#X#
+
+###--INITIALIZATION--###
+offset = 0
+Q = defaultdict(int)
+
+#RULES#
+
+bqm = BinaryQuadraticModel.from_qubo(Q, offset=offset)
+
+#RESULT
+result = solver.sample(bqm)
+
+print("SOLUTIONS")
+print(result.first)
