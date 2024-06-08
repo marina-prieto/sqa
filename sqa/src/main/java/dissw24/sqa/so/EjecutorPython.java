@@ -7,21 +7,19 @@ import java.io.IOException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-//latest version (creo)rellenar lo de los pasos 1 a 10, está en foto 14/03/2024
-
 public class EjecutorPython {
 
-	public void ejecuta(String fileName) {
-		//1)
-		//2)
-		//3)
-		//4)
-		//5)
-		//6)
-		//7)
-		//8)
-		//9)
-		//10)
+	public String ejecuta(String fileName) {
+		//1) abrir la consola en el directorio en el que queremos ejecutar el proceso
+		//2) establecer el PATH y las variables de entorno
+		//3) construimos el comando que queremos ejecutar
+		//4) redireccionar la salida estandar de la consola a un archivo
+		//5) redireccionar la salidad de error de la consola a un archivo
+		//6) lanzar el proceso
+		//7) esperamos a que termine
+		//8) leer el archivo de salida y el archivo de error
+		//9) si no hay error, devolver a quien corresponda el resultado de la salida
+		//10) si si hay error, devolver a quien corresponda el mensaje de error para que haga llegar al front una excepcion
 		
 		fileName = "/Users/thala/practicaDisoft/pruebas/codigo.py";
 		ProcessBuilder pb = new ProcessBuilder("python", fileName);
@@ -45,6 +43,7 @@ public class EjecutorPython {
 					byte[] bytes = new byte[fis.available()];
 					fis.read(bytes);
 					respuesta = new String(bytes);
+					return respuesta;
 				}
 			}
 		} catch (IOException | InterruptedException e){
