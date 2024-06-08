@@ -1,5 +1,5 @@
 package dissw24.sqa.model;
 
-public class Cuadrado extends Sumando{
+public class Cuadrado extends Sumando {
 
 }

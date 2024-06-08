@@ -47,25 +47,25 @@ public class DWaveController extends CommonController{
 		}
 	}
 	
-	@PutMapping("/ejecutarCodigo")
-	public Map<String, Object> ejecutarCodigo(HttpServletRequest req, @RequestBody List<Map<String, Object>> ecuaciones){
-		String token = super.validarPeticion(req);
+	//@PutMapping("/ejecutarCodigo")
+	//public Map<String, Object> ejecutarCodigo(HttpServletRequest req, @RequestBody List<Map<String, Object>> ecuaciones){
+		//String token = super.validarPeticion(req);
 		
-		try {
-			Hamiltoniano h = this.ecuacionesService.generarHamiltoniano(ecuaciones);
-			String hFileName = super.save(token, h);
-			MatrizTriangular mt = this.ecuacionesService.generarMatrizTriangular(hFileName);
-			String mtFileName = super.save(token, mt);
-			String codigo = this.dwaveService.generarCodigo(mtFileName);
-			String codigoFileName = super.saveCodigo(token, codigo);
+		//try {
+			//Hamiltoniano h = this.ecuacionesService.generarHamiltoniano(ecuaciones);
+			//String hFileName = super.save(token, h);
+			//MatrizTriangular mt = this.ecuacionesService.generarMatrizTriangular(hFileName);
+			//String mtFileName = super.save(token, mt);
+			//String codigo = this.dwaveService.generarCodigo(mtFileName);
+			//String codigoFileName = super.saveCodigo(token, codigo);
 			
-			EjecutorPython ejecutor = new EjecutorPython();
-			Map<String, Object> resultado = new HashMap<>();
-			resultado.put("codigo", ejecutor.ejecuta(codigoFileName));
-			return resultado;
+			//EjecutorPython ejecutor = new EjecutorPython();
+			//Map<String, Object> resultado = new HashMap<>();
+			//resultado.put("codigo", ejecutor.ejecuta(codigoFileName));
+			//return resultado;
 			
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error " + e.getLocalizedMessage());
-		}
-	}
+		//} catch (Exception e) {
+			//throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error " + e.getLocalizedMessage());
+		//}
+	//}
 }

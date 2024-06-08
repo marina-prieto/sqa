@@ -20,7 +20,6 @@ public class EcuacionesService {
 	}
 	
 	public int calcular(String eq, List<Integer> x) {
-		//hacer el metodo que haga la cuenta. pilla la ecuacion y reemplaza cada x (x1, x2, etc) con los x de la lista de integers
 		int cont = 0;
 		for (int i = 0; i < eq.length(); i++)
 			if (eq.charAt(i) == 'x')
@@ -29,15 +28,15 @@ public class EcuacionesService {
 	}
 	
 	public Hamiltoniano generarHamiltoniano(List<Map<String, Object>> ecuaciones) {
-		Hamiltoniano h = new Hamiltoniano();
-		for (Map<String, Object> ecuacion : ecuaciones) {
-			String eq = (String) ecuacion.get("eq");
-			//int lambda = (int) ecuacion.get("lambda");
-			Ecuacion equation = new Ecuacion(eq);
-			//equation.setLambda(lambda);
-			h.add(equation);
-		}
-		return Hamiltoniano.defecto();
-	}
+        Hamiltoniano h = new Hamiltoniano();
+        for (Map<String, Object> ecuacion : ecuaciones) {
+            String eq = (String) ecuacion.get("eq");
+            int lambda = (int) ecuacion.get("lambda");
+            Ecuacion equation = new Ecuacion(eq);
+            equation.setLambda(lambda);
+            h.add(equation);
+        }
+        return h;
+    }
 }
  
