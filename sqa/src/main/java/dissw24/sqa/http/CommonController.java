@@ -70,7 +70,7 @@ public abstract class CommonController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Token nula");
         }
         try {
-            if (validarToken(token)) {
+            if (!validarToken(token)) { // Cambiado a !validarToken(token) para verificar si el token no es válido
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Token inválida");
             }
         } catch (IOException e) {
@@ -80,3 +80,4 @@ public abstract class CommonController {
         return token;
     }
 }
+
