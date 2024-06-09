@@ -10,7 +10,7 @@ public class Ecuacion implements Serializable {
 
     private List<Sumando> sumandos;
     private int lambda;
-    private int constante; // Término independiente si existe
+    private int constante;
 
     public Ecuacion(String eq, int lambda) {
         this.sumandos = new ArrayList<>();
@@ -20,7 +20,7 @@ public class Ecuacion implements Serializable {
     }
 
     private void parseEquation(String eq) {
-        // Separar la ecuación en la parte izquierda y derecha del "=" si existe
+        // Separar la ecuación en la parte izquierda y derecha del "="
         String[] sides = eq.split("=");
         String leftSide = sides[0].trim();
         String rightSide = sides.length > 1 ? sides[1].trim() : "0";
@@ -37,7 +37,7 @@ public class Ecuacion implements Serializable {
                 int factor = 1;
                 int index = 0;
 
-                // Manejo de casos donde el factor no está explícito (ej: +x1 o -x1)
+                // Casos tipo +x1 o -x1
                 if (!parts[0].trim().isEmpty() && !parts[0].trim().equals("+") && !parts[0].trim().equals("-")) {
                     factor = Integer.parseInt(parts[0].trim().replace("+", ""));
                 } else if (parts[0].trim().equals("-")) {
@@ -48,13 +48,12 @@ public class Ecuacion implements Serializable {
                 if (parts.length > 1 && !parts[1].trim().isEmpty()) {
                     index = Integer.parseInt(parts[1].trim());
                 }
-
                 Simple sumando = new Simple();
                 sumando.setFactor(factor);
                 sumando.setIndex(index);
                 this.add(sumando);
             } else {
-                // Es un término constante
+                // Constante
                 this.constante += Integer.parseInt(term);
             }
         }
@@ -62,7 +61,7 @@ public class Ecuacion implements Serializable {
         // Parsear la parte derecha si existe
         if (!rightSide.equals("0")) {
             int constantTerm = Integer.parseInt(rightSide);
-            this.constante -= constantTerm; // Mover el término constante al lado izquierdo
+            this.constante -= constantTerm;
         }
     }
 

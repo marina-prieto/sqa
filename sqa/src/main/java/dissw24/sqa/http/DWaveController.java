@@ -1,6 +1,5 @@
 package dissw24.sqa.http;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -47,14 +46,11 @@ public class DWaveController extends CommonController {
     @PutMapping("/ejecutarCodigo")
     public String ejecutarCodigo(HttpServletRequest req, @RequestBody List<Map<String, Object>> ecuaciones) {
         String token = super.validarPeticion(req);
-        
         try {
             String codigoFileName = super.getName(token) + "dwavefile.py";
-            
             EjecutorPython ejecutor = new EjecutorPython();
             String resultado = ejecutor.ejecuta(codigoFileName);
             return resultado;
-            
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error " + e.getLocalizedMessage());
         }

@@ -6,7 +6,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-//latest version
 @SpringBootApplication
 @ServletComponentScan
 public class AppEcuaciones extends SpringBootServletInitializer {

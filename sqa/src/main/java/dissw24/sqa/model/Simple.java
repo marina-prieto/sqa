@@ -4,7 +4,7 @@ public class Simple extends Sumando {
 
     @Override
     public String toString() {
-        if (index == -1) { // Término constante
+        if (index == -1) {
             return String.valueOf(factor);
         }
         return super.toString();

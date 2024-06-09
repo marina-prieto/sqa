@@ -26,6 +26,7 @@ public abstract class CommonController {
 
     private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
 
+    //Validación de tokens de usuario
     protected boolean validarToken(String token) throws IOException {
         boolean valido = this.commonService.validarToken(token);
         if (valido) {
@@ -34,6 +35,7 @@ public abstract class CommonController {
         return valido;
     }
 
+    //Crear carpeta del token de sesión
     private void crearCarpeta(String token) {
         File dir = new File(this.getName(token));
         if (!dir.exists()) {
@@ -41,6 +43,7 @@ public abstract class CommonController {
         }
     }
 
+    //Getname del archivo, con path, token, nombre...
     protected String getName(String token) {
         String userPath = System.getProperty("user.home");
         if (!userPath.endsWith(File.separator)) {
@@ -76,6 +79,7 @@ public abstract class CommonController {
         return fileName;
     }
 
+    //Validar peticiones del frontend con token
     public String validarPeticion(HttpServletRequest req) {
         String token = req.getHeader("token");
         if (token == null) {

@@ -31,7 +31,7 @@ public class Hamiltoniano implements Serializable {
     public String calcularHamiltoniano() {
         Map<String, Integer> terminos = new HashMap<>();
 
-        // Función a minimizar
+        // Funcion objetivo
         if (funcionObjetivo != null) {
             for (Sumando sumando : funcionObjetivo.getSumandos()) {
                 String key = "x" + sumando.getIndex() + "^2";
@@ -39,7 +39,7 @@ public class Hamiltoniano implements Serializable {
             }
         }
 
-        // Expandir restricciones y multiplicar por su lambda
+        // Restricciones
         for (Ecuacion restriccion : restricciones) {
             int lambda = restriccion.getLambda();
             List<Sumando> sumandos = restriccion.getSumandos();
@@ -65,7 +65,7 @@ public class Hamiltoniano implements Serializable {
             terminos.put(keyConstante, terminos.getOrDefault(keyConstante, 0) + lambda * constante * constante);
         }
 
-        // Convertir términos lineales a términos cuadráticos
+        // Términos lineales a cuadráticos
         for (String key : new ArrayList<>(terminos.keySet())) {
             if (key.matches("x\\d+$")) {
                 int index = Integer.parseInt(key.substring(1));
@@ -103,7 +103,7 @@ public class Hamiltoniano implements Serializable {
     public int[][] calcularMatrizTriangular() {
         List<Sumando> sumandos = new ArrayList<>();
 
-        // Obtener todos los sumandos del Hamiltoniano
+        // Get sumandos hamiltoniano
         for (Ecuacion ecuacion : ecuaciones) {
             sumandos.addAll(ecuacion.getSumandos());
         }
@@ -131,7 +131,6 @@ public class Hamiltoniano implements Serializable {
                 matrizTriangular[index2][index1] += factor;
             }
         }
-
         return matrizTriangular;
     }
     
