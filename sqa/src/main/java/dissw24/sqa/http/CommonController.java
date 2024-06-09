@@ -3,14 +3,17 @@ package dissw24.sqa.http;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
+
 import dissw24.sqa.services.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,11 +68,12 @@ public abstract class CommonController {
         return fileName;
     }
 
-    protected void saveCodigo(String token, String codigo) throws FileNotFoundException, IOException {
-        String fileName = this.getName(token) + "codigo.py";
+    protected String saveCodigo(String token, String codigo) throws FileNotFoundException, IOException {
+        String fileName = this.getName(token) + "dwavefile.py";
         try (FileOutputStream fos = new FileOutputStream(fileName)) {
             fos.write(codigo.getBytes());
         }
+        return fileName;
     }
 
     public String validarPeticion(HttpServletRequest req) {
