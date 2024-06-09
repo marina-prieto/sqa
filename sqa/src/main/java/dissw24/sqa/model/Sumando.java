@@ -28,9 +28,6 @@ public abstract class Sumando implements Serializable {
     public int getIndex() {
         return this.index;
     }
-    
-    @Override
-    public String toString() {
-        return factor + "x" + index;
-    }
+
+    public abstract String toStringSinFactor();
 }

@@ -3,7 +3,7 @@ package dissw24.sqa.model;
 public class Cuadrado extends Sumando {
 
     @Override
-    public String toString() {
-        return super.toString() + "^2";
+    public String toStringSinFactor() {
+        return "x" + index + "^2";
     }
 }

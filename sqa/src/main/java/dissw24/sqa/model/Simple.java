@@ -9,4 +9,9 @@ public class Simple extends Sumando {
         }
         return super.toString();
     }
+
+    @Override
+    public String toStringSinFactor() {
+        return "x" + index;
+    }
 }

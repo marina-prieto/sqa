@@ -36,7 +36,7 @@ public class Ecuacion implements Serializable {
                 String[] parts = term.split("x");
                 int factor = 1;
                 int index = 0;
-                
+
                 // Manejo de casos donde el factor no está explícito (ej: +x1 o -x1)
                 if (!parts[0].trim().isEmpty() && !parts[0].trim().equals("+") && !parts[0].trim().equals("-")) {
                     factor = Integer.parseInt(parts[0].trim().replace("+", ""));

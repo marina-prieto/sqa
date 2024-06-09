@@ -2,7 +2,9 @@ package dissw24.sqa.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Hamiltoniano implements Serializable {
 
@@ -25,31 +27,59 @@ public class Hamiltoniano implements Serializable {
     }
 
     public String calcularHamiltoniano() {
-        Suma hamiltoniano = new Suma();
+        Map<String, Integer> terminos = new HashMap<>();
 
-        // Agregar la función objetivo
+        // Función a minimizar
         if (funcionObjetivo != null) {
             for (Sumando sumando : funcionObjetivo.getSumandos()) {
-                Cuadrado cuadrado = new Cuadrado();
-                cuadrado.setFactor(sumando.getFactor() * sumando.getFactor());
-                cuadrado.setIndex(sumando.getIndex());
-                hamiltoniano.add(cuadrado);
+                String key = "x" + sumando.getIndex() + "^2";
+                terminos.put(key, terminos.getOrDefault(key, 0) + 2 * funcionObjetivo.getLambda() * sumando.getFactor());
             }
         }
 
-        // Agregar las restricciones multiplicadas por sus lambdas
+        // Restricciones
         for (Ecuacion restriccion : restricciones) {
             int lambda = restriccion.getLambda();
-            for (Sumando sumando : restriccion.getSumandos()) {
-                Doble doble = new Doble();
-                doble.setFactor(sumando.getFactor() * lambda);
-                doble.setIndex(sumando.getIndex());
-                hamiltoniano.add(doble);
+            List<Sumando> sumandos = restriccion.getSumandos();
+            int constante = restriccion.getConstante();
+
+            // Expandir la restricción al cuadrado
+            for (int i = 0; i < sumandos.size(); i++) {
+                Sumando sumando1 = sumandos.get(i);
+
+                // Términos cuadráticos
+                String keyCuadratico = "x" + sumando1.getIndex() + "^2";
+                terminos.put(keyCuadratico, terminos.getOrDefault(keyCuadratico, 0) + lambda * sumando1.getFactor() * sumando1.getFactor());
+
+                for (int j = i + 1; j < sumandos.size(); j++) {
+                    Sumando sumando2 = sumandos.get(j);
+                    String keyCruzado = "x" + sumando1.getIndex() + "x" + sumando2.getIndex();
+                    terminos.put(keyCruzado, terminos.getOrDefault(keyCruzado, 0) + 2 * lambda * sumando1.getFactor() * sumando2.getFactor());
+                }
+
+                // Términos lineales convertidos a términos cuadráticos
+                String keyLineal = "x" + sumando1.getIndex();
+                int existingValue = terminos.getOrDefault(keyLineal, 0);
+                terminos.put(keyLineal, existingValue - lambda * sumando1.getFactor());
+                terminos.put(keyCuadratico, terminos.getOrDefault(keyCuadratico, 0) + lambda * sumando1.getFactor() * sumando1.getFactor());
             }
-            Simple constante = new Simple();
-            constante.setFactor(restriccion.getConstante() * lambda);
-            constante.setIndex(-1); // Indicador de término constante
-            hamiltoniano.add(constante);
+
+            // Término constante
+            String keyConstante = "constante";
+            terminos.put(keyConstante, terminos.getOrDefault(keyConstante, 0) + lambda * constante * constante);
+        }
+
+        // Crear el resultado del Hamiltoniano
+        StringBuilder hamiltoniano = new StringBuilder();
+        for (Map.Entry<String, Integer> entry : terminos.entrySet()) {
+            if (entry.getValue() != 0) {
+                hamiltoniano.append(entry.getValue()).append(entry.getKey()).append(" + ");
+            }
+        }
+
+        // Eliminar el último " + "
+        if (hamiltoniano.length() > 0) {
+            hamiltoniano.setLength(hamiltoniano.length() - 3);
         }
 
         return hamiltoniano.toString();
@@ -57,8 +87,6 @@ public class Hamiltoniano implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("");
-        sb.append(calcularHamiltoniano());
-        return sb.toString();
+        return calcularHamiltoniano();
     }
 }
