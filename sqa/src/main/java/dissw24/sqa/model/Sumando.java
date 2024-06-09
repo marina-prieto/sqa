@@ -2,7 +2,7 @@ package dissw24.sqa.model;
 
 import java.io.Serializable;
 
-public class Sumando implements Serializable {
+public abstract class Sumando implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,5 +19,13 @@ public class Sumando implements Serializable {
 
     public int calcular(int x) {
         return this.factor * x;
+    }
+
+    public int getFactor() {
+        return this.factor;
+    }
+
+    public int getIndex() {
+        return this.index;
     }
 }

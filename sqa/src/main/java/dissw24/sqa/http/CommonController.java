@@ -2,9 +2,9 @@ package dissw24.sqa.http;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.FileOutputStream;
 import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +57,14 @@ public abstract class CommonController {
         return fileName;
     }
 
+    public String save(String token, String content) throws FileNotFoundException, IOException {
+        String fileName = this.getName(token) + "hamiltoniano.txt";
+        try (FileOutputStream fos = new FileOutputStream(fileName)) {
+            fos.write(content.getBytes());
+        }
+        return fileName;
+    }
+
     protected void saveCodigo(String token, String codigo) throws FileNotFoundException, IOException {
         String fileName = this.getName(token) + "codigo.py";
         try (FileOutputStream fos = new FileOutputStream(fileName)) {
@@ -70,7 +78,7 @@ public abstract class CommonController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Token nula");
         }
         try {
-            if (!validarToken(token)) { // Cambiado a !validarToken(token) para verificar si el token no es válido
+            if (!validarToken(token)) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Token inválida");
             }
         } catch (IOException e) {
@@ -80,4 +88,3 @@ public abstract class CommonController {
         return token;
     }
 }
-

@@ -9,42 +9,54 @@ public class Hamiltoniano implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private List<Ecuacion> ecuaciones = new ArrayList<>();
-    private Suma suma;
+    private List<Ecuacion> restricciones = new ArrayList<>();
+    private Ecuacion funcionObjetivo;
 
-    public void add(Ecuacion equation) {
-        this.ecuaciones.add(equation);
+    public void addEcuacion(Ecuacion ecuacion) {
+        this.ecuaciones.add(ecuacion);
     }
 
-    public Suma getSuma() {
-        return suma;
+    public void setFuncionObjetivo(Ecuacion funcionObjetivo) {
+        this.funcionObjetivo = funcionObjetivo;
     }
 
-    public static Hamiltoniano defecto() {
-        Cuadrado c1 = new Cuadrado();
-        c1.setFactor(-7);
-        c1.setIndex(0);
+    public void addRestriccion(Ecuacion restriccion) {
+        this.restricciones.add(restriccion);
+    }
 
-        Cuadrado c2 = new Cuadrado();
-        c2.setFactor(-15);
-        c2.setIndex(1);
+    public String calcularHamiltoniano() {
+        Suma hamiltoniano = new Suma();
 
-        Cuadrado c3 = new Cuadrado();
-        c3.setFactor(10);
-        c3.setIndex(2);
+        // Agregar la función objetivo
+        if (funcionObjetivo != null) {
+            for (Sumando sumando : funcionObjetivo.getSumandos()) {
+                Cuadrado cuadrado = new Cuadrado();
+                cuadrado.setFactor(sumando.getFactor() * sumando.getFactor());
+                cuadrado.setIndex(sumando.getIndex());
+                hamiltoniano.add(cuadrado);
+            }
+        }
 
-        Doble d1 = new Doble();
-        d1.setFactor(20);
-        d1.setIndex(0);
-        d1.setIndexB(1);
+        // Agregar las restricciones multiplicadas por sus lambdas
+        for (Ecuacion restriccion : restricciones) {
+            int lambda = restriccion.getLambda();
+            for (Sumando sumando : restriccion.getSumandos()) {
+                Doble doble = new Doble();
+                doble.setFactor(sumando.getFactor() * lambda);
+                doble.setIndex(sumando.getIndex());
+                hamiltoniano.add(doble);
+            }
+            Simple constante = new Simple();
+            constante.setFactor(restriccion.getConstante() * lambda);
+            constante.setIndex(-1); // Indicador de término constante
+            hamiltoniano.add(constante);
+        }
 
-        Doble d2 = new Doble();
-        d2.setFactor(12);
-        d2.setIndex(1);
-        d2.setIndexB(2);
+        return hamiltoniano.toString();
+    }
 
-        Hamiltoniano h = new Hamiltoniano();
-        h.suma.add(c1, c2, c3, d1, d2);
-
-        return h;
+    @Override
+    public String toString() {
+        return calcularHamiltoniano();
     }
 }
