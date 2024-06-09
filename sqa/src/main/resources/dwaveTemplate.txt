@@ -22,4 +22,4 @@ bqm = BinaryQuadraticModel.from_qubo(Q, offset=offset)
 result = solver.sample(bqm)
 
 print("SOLUTIONS")
-print(result.first)
+print(result)

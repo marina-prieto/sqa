@@ -41,7 +41,7 @@ public abstract class CommonController {
         }
     }
 
-    private String getName(String token) {
+    protected String getName(String token) {
         String userPath = System.getProperty("user.home");
         if (!userPath.endsWith(File.separator)) {
             userPath = userPath + File.separator;
