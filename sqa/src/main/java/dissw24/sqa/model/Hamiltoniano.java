@@ -37,17 +37,14 @@ public class Hamiltoniano implements Serializable {
             }
         }
 
-        // Restricciones
+        // Expandir restricciones y multiplicar por su lambda
         for (Ecuacion restriccion : restricciones) {
             int lambda = restriccion.getLambda();
             List<Sumando> sumandos = restriccion.getSumandos();
             int constante = restriccion.getConstante();
 
-            // Expandir la restricción al cuadrado
             for (int i = 0; i < sumandos.size(); i++) {
                 Sumando sumando1 = sumandos.get(i);
-
-                // Términos cuadráticos
                 String keyCuadratico = "x" + sumando1.getIndex() + "^2";
                 terminos.put(keyCuadratico, terminos.getOrDefault(keyCuadratico, 0) + lambda * sumando1.getFactor() * sumando1.getFactor());
 
@@ -57,22 +54,38 @@ public class Hamiltoniano implements Serializable {
                     terminos.put(keyCruzado, terminos.getOrDefault(keyCruzado, 0) + 2 * lambda * sumando1.getFactor() * sumando2.getFactor());
                 }
 
-                // Términos lineales convertidos a términos cuadráticos
                 String keyLineal = "x" + sumando1.getIndex();
-                int existingValue = terminos.getOrDefault(keyLineal, 0);
-                terminos.put(keyLineal, existingValue - lambda * sumando1.getFactor());
+                terminos.put(keyLineal, terminos.getOrDefault(keyLineal, 0) - 2 * lambda * sumando1.getFactor() * constante);
                 terminos.put(keyCuadratico, terminos.getOrDefault(keyCuadratico, 0) + lambda * sumando1.getFactor() * sumando1.getFactor());
             }
 
-            // Término constante
             String keyConstante = "constante";
             terminos.put(keyConstante, terminos.getOrDefault(keyConstante, 0) + lambda * constante * constante);
         }
 
+        // Convertir términos lineales a términos cuadráticos
+        for (String key : new ArrayList<>(terminos.keySet())) {
+            if (key.matches("x\\d+$")) {
+                int index = Integer.parseInt(key.substring(1));
+                String keyCuadratico = "x" + index + "^2";
+                int factor = terminos.get(key);
+                terminos.put(keyCuadratico, terminos.getOrDefault(keyCuadratico, 0) + factor);
+                terminos.remove(key);
+            }
+        }
+
+        // Agrupar términos similares
+        Map<String, Integer> terminosAgrupados = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : terminos.entrySet()) {
+            String key = entry.getKey();
+            int value = entry.getValue();
+            terminosAgrupados.put(key, terminosAgrupados.getOrDefault(key, 0) + value);
+        }
+
         // Crear el resultado del Hamiltoniano
         StringBuilder hamiltoniano = new StringBuilder();
-        for (Map.Entry<String, Integer> entry : terminos.entrySet()) {
-            if (entry.getValue() != 0) {
+        for (Map.Entry<String, Integer> entry : terminosAgrupados.entrySet()) {
+            if (entry.getValue() != 0 && !entry.getKey().equals("constante")) {
                 hamiltoniano.append(entry.getValue()).append(entry.getKey()).append(" + ");
             }
         }
