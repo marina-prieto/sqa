@@ -86,7 +86,10 @@ public class Ecuacion implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Sumando sumando : sumandos) {
-            sb.append(sumando.getFactor()).append("x").append(sumando.getIndex()).append(" ");
+            sb.append(sumando.toString()).append(" ");
+        }
+        if (constante != 0) {
+            sb.append(" + ").append(constante);
         }
         sb.append("= ").append(lambda);
         return sb.toString();

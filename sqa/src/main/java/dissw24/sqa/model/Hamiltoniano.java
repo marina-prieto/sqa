@@ -57,6 +57,8 @@ public class Hamiltoniano implements Serializable {
 
     @Override
     public String toString() {
-        return calcularHamiltoniano();
+        StringBuilder sb = new StringBuilder("");
+        sb.append(calcularHamiltoniano());
+        return sb.toString();
     }
 }

@@ -4,18 +4,24 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Suma implements Serializable {
+public class Suma extends Sumando implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private List<Sumando> sumandos;
+    private List<Sumando> sumandos = new ArrayList<>();
 
-    public Suma() {
-        this.sumandos = new ArrayList<>();
+    public void add(Sumando sumando) {
+        this.sumandos.add(sumando);
     }
 
-    public void add(Sumando... sumandos) {
-        for (Sumando s : sumandos) {
-            this.sumandos.add(s);
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Sumando sumando : sumandos) {
+            sb.append(sumando.toString()).append(" + ");
         }
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 3); // Eliminar el último " + "
+        }
+        return sb.toString();
     }
 }

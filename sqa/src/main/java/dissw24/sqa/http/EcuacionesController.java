@@ -29,8 +29,7 @@ public class EcuacionesController extends CommonController {
 
         try {
             Hamiltoniano hamiltoniano = service.generarHamiltoniano(ecuaciones);
-            String hamiltonianoStr = hamiltoniano.calcularHamiltoniano();
-            return "Hamiltoniano generado correctamente: " + hamiltonianoStr;
+            return "Hamiltoniano generado correctamente: " + hamiltoniano.toString();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error generando Hamiltoniano: " + e.getMessage());
         }
