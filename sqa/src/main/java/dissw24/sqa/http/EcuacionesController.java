@@ -29,9 +29,20 @@ public class EcuacionesController extends CommonController {
         try {
             Hamiltoniano hamiltoniano = service.generarHamiltoniano(ecuaciones);
             String hamiltonianoStr = hamiltoniano.calcularHamiltoniano();
-            return "Hamiltoniano generado correctamente: " + hamiltonianoStr;
+            return hamiltonianoStr;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error generando Hamiltoniano: " + e.getMessage());
+        }
+    }
+    
+    @PutMapping("/generarMatrizTriangular")
+    public int[][] generarMatrizTriangular(HttpServletRequest req, @RequestBody List<Map<String, Object>> ecuaciones) {
+        String token = super.validarPeticion(req);
+
+        try {
+            return service.generarMatrizTriangular(ecuaciones);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error generando matriz triangular: " + e.getMessage());
         }
     }
 }

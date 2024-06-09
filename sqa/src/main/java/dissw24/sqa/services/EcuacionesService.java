@@ -2,7 +2,9 @@ package dissw24.sqa.services;
 
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Service;
+
 import dissw24.sqa.model.Ecuacion;
 import dissw24.sqa.model.Hamiltoniano;
 
@@ -24,4 +26,10 @@ public class EcuacionesService {
         }
         return hamiltoniano;
     }
+
+    public int[][] generarMatrizTriangular(List<Map<String, Object>> ecuaciones) {
+        Hamiltoniano hamiltoniano = generarHamiltoniano(ecuaciones);
+        return hamiltoniano.calcularMatrizTriangular();
+    }
 }
+

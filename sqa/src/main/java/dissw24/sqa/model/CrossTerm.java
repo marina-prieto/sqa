@@ -12,6 +12,10 @@ public class CrossTerm extends Sumando {
         this.index2 = index2;
     }
 
+    public int getIndex1() {
+        return index;
+    }
+    
     public int getIndex2() {
         return index2;
     }

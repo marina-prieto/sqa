@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Hamiltoniano implements Serializable {
 
@@ -98,6 +100,41 @@ public class Hamiltoniano implements Serializable {
         return hamiltoniano.toString();
     }
 
+    public int[][] calcularMatrizTriangular() {
+        List<Sumando> sumandos = new ArrayList<>();
+
+        // Obtener todos los sumandos del Hamiltoniano
+        for (Ecuacion ecuacion : ecuaciones) {
+            sumandos.addAll(ecuacion.getSumandos());
+        }
+
+        // Determinar el tamaño de la matriz triangular
+        int size = 0;
+        for (Sumando sumando : sumandos) {
+            size = Math.max(size, sumando.getIndex() + 1);
+        }
+
+        int[][] matrizTriangular = new int[size][size];
+
+        String hamiltonianoStr = this.calcularHamiltoniano();
+        Pattern pattern = Pattern.compile("([+-]?\\d+)(x\\d+)(x\\d+)?(\\^2)?");
+        Matcher matcher = pattern.matcher(hamiltonianoStr);
+
+        while (matcher.find()) {
+            int factor = Integer.parseInt(matcher.group(1));
+            int index1 = Integer.parseInt(matcher.group(2).substring(1));
+            int index2 = matcher.group(3) != null ? Integer.parseInt(matcher.group(3).substring(1)) : index1;
+
+            if (index1 <= index2) {
+                matrizTriangular[index1][index2] += factor;
+            } else {
+                matrizTriangular[index2][index1] += factor;
+            }
+        }
+
+        return matrizTriangular;
+    }
+    
     @Override
     public String toString() {
         return calcularHamiltoniano();

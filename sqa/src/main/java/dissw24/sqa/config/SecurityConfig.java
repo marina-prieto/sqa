@@ -17,7 +17,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/ecuaciones/generarHamiltoniano", 
+                .antMatchers("/ecuaciones/generarHamiltoniano",
+                			 "/ecuaciones/generarMatrizTriangular",
+                			 "/dwave/generarCodigo",
                              "/dwave/ejecutarCodigo").permitAll()
                 .anyRequest().authenticated()
             .and()
